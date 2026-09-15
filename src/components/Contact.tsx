@@ -99,10 +99,9 @@ export const Contact: React.FC<ContactProps> = ({ profile, socials = [] }) => {
     .filter((item) => item.status === 'active')
     .sort((a, b) => (Number(a.display_order) || 99) - (Number(b.display_order) || 99))
 
-  // Determine email link
-  const emailHref = profile.email
-    ? `mailto:${profile.email}?subject=${encodeURIComponent(t('contactSubject'))}`
-    : '#contact'
+  // Clean valid target email (guaranteed non-empty for instant direct email client connection)
+  const targetEmail = (profile.email && profile.email.trim()) || 'contact@naufalporto.com'
+  const emailHref = `mailto:${targetEmail}?subject=${encodeURIComponent(t('contactSubject') || 'Project Collaboration & Inquiry')}`
 
   // Avoid showing duplicate email card if socials already has one pointing to the same email
   const filteredSocials = activeSocials.filter((s) => {
@@ -177,93 +176,102 @@ export const Contact: React.FC<ContactProps> = ({ profile, socials = [] }) => {
           </p>
         </div>
 
-        {/* 2. Social & Platform Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 max-w-5xl mx-auto mb-12 sm:mb-16">
-          {/* Dedicated Profile Email Card */}
-          {hasEmailCard && (
-            <a
-              href={emailHref}
-              className="group relative bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-5 overflow-hidden"
-            >
-              {/* Subtle gradient border accent on hover */}
-              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#6c4df6] via-[#ec4899] to-[#f97316] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-              <div className="flex items-start justify-between">
-                <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 text-slate-700 group-hover:text-[#6c4df6] group-hover:bg-[#6c4df6]/10 group-hover:scale-105 transition-all duration-300 flex items-center justify-center">
-                  <Mail size={22} />
-                </div>
-
-                <div className="flex items-center text-slate-400 group-hover:text-[#6c4df6] transition-colors">
-                  <span className="text-[11px] font-bold uppercase tracking-wider mr-1">
-                    {t('contactSendEmailAction')}
-                  </span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-                </div>
-              </div>
-
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">
-                  {t('contactSendEmail')}
-                </span>
-                <span className="text-base sm:text-lg font-black text-slate-900 group-hover:text-[#6c4df6] transition-colors truncate block">
-                  {profile.email}
-                </span>
-              </div>
-            </a>
-          )}
-
-          {/* Dynamic Social Cards from Admin */}
-          {filteredSocials.map((social) => {
-            const localizedLabel =
-              getLocalized(social, 'label', language) || social.label || social.platform
-            const isEmail = social.platform.toLowerCase() === 'email'
-            const href =
-              isEmail && !social.url.startsWith('mailto:')
-                ? `mailto:${social.url}`
-                : social.url
-
-            return (
+        {/* 2. Social & Platform Cards - STRICTLY SINGLE ROW (Fleksibel 1 baris, tidak pernah membuat baris kedua) */}
+        <div className="w-full max-w-6xl mx-auto mb-12 sm:mb-16 overflow-x-auto scrollbar-none pb-2 pt-1">
+          <div
+            className={`flex flex-nowrap items-stretch justify-center gap-3.5 sm:gap-4 w-full min-w-max md:min-w-0`}
+          >
+            {/* Dedicated Profile Email Card */}
+            {hasEmailCard && (
               <a
-                key={social.id}
-                href={href}
-                target={isEmail ? '_self' : '_blank'}
-                rel="noopener noreferrer"
-                className="group relative bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-5 overflow-hidden"
+                href={emailHref}
+                className="flex-1 min-w-[200px] sm:min-w-[210px] md:min-w-0 group relative bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-4 overflow-hidden"
               >
                 {/* Subtle gradient border accent on hover */}
                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#6c4df6] via-[#ec4899] to-[#f97316] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="flex items-start justify-between">
-                  <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 text-slate-700 group-hover:text-[#6c4df6] group-hover:bg-[#6c4df6]/10 group-hover:scale-105 transition-all duration-300 flex items-center justify-center">
-                    {renderPlatformIcon(social.platform, 22)}
+                  <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 text-slate-700 group-hover:text-[#6c4df6] group-hover:bg-[#6c4df6]/10 group-hover:scale-105 transition-all duration-300 flex items-center justify-center shrink-0">
+                    <Mail size={20} />
                   </div>
 
                   <div className="flex items-center text-slate-400 group-hover:text-[#6c4df6] transition-colors">
-                    <span className="text-[11px] font-bold uppercase tracking-wider mr-1">
-                      {t('contactVisitAction')}
+                    <span className="text-[10px] font-bold uppercase tracking-wider mr-1">
+                      {t('contactSendEmailAction')}
                     </span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
                   </div>
                 </div>
 
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">
-                    {social.platform}
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 block mb-0.5">
+                    {t('contactSendEmail')}
                   </span>
-                  <span className="text-base sm:text-lg font-black text-slate-900 group-hover:text-[#6c4df6] transition-colors truncate block">
-                    {social.username ? `@${social.username.replace(/^@/, '')}` : localizedLabel}
+                  <span className="text-sm sm:text-base font-black text-slate-900 group-hover:text-[#6c4df6] transition-colors truncate block">
+                    {profile.email}
                   </span>
                 </div>
               </a>
-            )
-          })}
+            )}
+
+            {/* Dynamic Social Cards from Admin */}
+            {filteredSocials.map((social) => {
+              const localizedLabel =
+                getLocalized(social, 'label', language) || social.label || social.platform
+              const isEmail = social.platform.toLowerCase() === 'email'
+              const href =
+                isEmail && !social.url.startsWith('mailto:')
+                  ? `mailto:${social.url}`
+                  : social.url
+
+              return (
+                <a
+                  key={social.id}
+                  href={href}
+                  target={isEmail ? '_self' : '_blank'}
+                  rel="noopener noreferrer"
+                  className="flex-1 min-w-[200px] sm:min-w-[210px] md:min-w-0 group relative bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-4 overflow-hidden"
+                >
+                  {/* Subtle gradient border accent on hover */}
+                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#6c4df6] via-[#ec4899] to-[#f97316] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                  <div className="flex items-start justify-between">
+                    <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 text-slate-700 group-hover:text-[#6c4df6] group-hover:bg-[#6c4df6]/10 group-hover:scale-105 transition-all duration-300 flex items-center justify-center shrink-0">
+                      {renderPlatformIcon(social.platform, 20)}
+                    </div>
+
+                    <div className="flex items-center text-slate-400 group-hover:text-[#6c4df6] transition-colors">
+                      <span className="text-[10px] font-bold uppercase tracking-wider mr-1">
+                        {t('contactVisitAction')}
+                      </span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 block mb-0.5">
+                      {social.platform}
+                    </span>
+                    <span className="text-sm sm:text-base font-black text-slate-900 group-hover:text-[#6c4df6] transition-colors truncate block">
+                      {social.username ? `@${social.username.replace(/^@/, '')}` : localizedLabel}
+                    </span>
+                  </div>
+                </a>
+              )
+            })}
+          </div>
         </div>
 
-        {/* 3. Main Call to Action Button */}
+        {/* 3. Main Call to Action Button - Direct Email Link */}
         <div className="flex items-center justify-center">
           <a
             href={emailHref}
-            className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-[#6c4df6] via-[#ec4899] to-[#f97316] text-white font-black text-sm sm:text-base tracking-wide shadow-lg shadow-[#6c4df6]/25 hover:shadow-2xl hover:shadow-[#ec4899]/35 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
+            onClick={() => {
+              window.location.href = emailHref
+            }}
+            className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-[#6c4df6] via-[#ec4899] to-[#f97316] text-white font-black text-sm sm:text-base tracking-wide shadow-lg shadow-[#6c4df6]/25 hover:shadow-2xl hover:shadow-[#ec4899]/35 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+            title={`Send Email directly to ${targetEmail}`}
+            aria-label={`Send Email directly to ${targetEmail}`}
           >
             <span className="relative z-10">{t('contactCta')}</span>
             <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1.5 transition-transform duration-300" />
