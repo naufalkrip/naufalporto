@@ -100,7 +100,7 @@ export const About: React.FC<AboutProps> = ({
   return (
     <section
       id="about"
-      className="py-10 sm:py-16 lg:py-24 relative bg-[#f8f8fa] border-t border-slate-200/60 overflow-hidden"
+      className="py-10 sm:py-16 lg:py-24 relative bg-transparent border-t border-slate-200/60 overflow-hidden"
     >
       {/* Ambient background lighting accents */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">

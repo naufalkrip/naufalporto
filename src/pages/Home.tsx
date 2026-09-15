@@ -6,6 +6,7 @@ import { ExperienceTimeline } from '../components/ExperienceTimeline'
 import { WorksShowcase } from '../components/WorksShowcase'
 import { Contact } from '../components/Contact'
 import { Footer } from '../components/Footer'
+import { BackgroundSprinkles } from '../components/BackgroundSprinkles'
 import { useProfile } from '../hooks/useProfile'
 import { useCategories } from '../hooks/useCategories'
 import { usePortfolio } from '../hooks/usePortfolio'
@@ -39,11 +40,14 @@ const HomeContent: React.FC = () => {
   if (!profile) return null
 
   return (
-    <div className="relative min-h-screen bg-[#f8f8fa] text-slate-900 selection:bg-[#ec4899] selection:text-white">
+    <div className="relative min-h-screen bg-[#f8f8fa] text-slate-900 selection:bg-[#ec4899] selection:text-white overflow-hidden">
+      {/* Subtle Ambient Background Sprinkles (Delightful, Minimalist & Animated) */}
+      <BackgroundSprinkles />
+
       {/* 1. Navbar with Language Switcher */}
       <Navbar name={profile.name} contactEmail={profile.email} />
 
-      <main>
+      <main className="relative z-10">
         {/* 2. Hero Section */}
         <Hero profile={profile} />
 

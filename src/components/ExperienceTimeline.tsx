@@ -47,7 +47,7 @@ export const ExperienceTimeline: React.FC<ExperienceTimelineProps> = ({
   return (
     <section
       id="experience"
-      className="relative py-8 sm:py-16 lg:py-20 bg-[#f8f8fa] border-t border-slate-200/60 overflow-hidden"
+      className="relative py-8 sm:py-16 lg:py-20 bg-transparent border-t border-slate-200/60 overflow-hidden"
     >
       {/* Background Soft Accent Glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">

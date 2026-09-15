@@ -116,7 +116,7 @@ export const Contact: React.FC<ContactProps> = ({ profile, socials = [] }) => {
   return (
     <section
       id="contact"
-      className="relative py-12 sm:py-20 md:py-28 bg-[#f8f8fa] border-t border-slate-200/70 overflow-hidden"
+      className="relative py-12 sm:py-20 md:py-28 bg-transparent border-t border-slate-200/70 overflow-hidden"
     >
       {/* Colorful Controlled Ambient Gradients */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">

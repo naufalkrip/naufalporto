@@ -74,7 +74,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
     <section
       id={`category-${category.slug || category.id}`}
       data-category-index={index}
-      className="relative py-8 sm:py-14 lg:py-18 flex flex-col justify-center bg-[#f8f8fa] border-t border-slate-200/60 overflow-hidden"
+      className="relative py-8 sm:py-14 lg:py-18 flex flex-col justify-center bg-transparent border-t border-slate-200/60 overflow-hidden"
     >
       {/* Chapter Ambient Glow */}
       <div

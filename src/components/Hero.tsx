@@ -37,7 +37,7 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
     'Crafting meaningful digital experiences where bold aesthetics meet thoughtful engineering.'
 
   return (
-    <section className="relative min-h-[60vh] sm:min-h-[75vh] flex items-center pt-20 pb-8 sm:pt-28 sm:pb-16 overflow-hidden bg-[#f8f8fa]">
+    <section className="relative min-h-[60vh] sm:min-h-[75vh] flex items-center pt-20 pb-8 sm:pt-28 sm:pb-16 overflow-hidden bg-transparent">
       {/* Subtle Abstract Background Accents */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Top-left soft gradient blob */}
