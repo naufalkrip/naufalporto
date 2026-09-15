@@ -44,9 +44,9 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ className = '' }) => {
         {/* Subtle decorative gradient flare in the corner */}
         <div className="absolute -top-3 -right-3 w-6 h-6 bg-gradient-to-br from-[#6c4df6]/25 to-[#ec4899]/25 rounded-full blur-[2px] pointer-events-none group-hover:opacity-100 transition-opacity duration-300" />
 
-        {/* Monogram Letter "A" */}
+        {/* Monogram Letter "N" */}
         <span className="font-black text-sm sm:text-base tracking-tight bg-gradient-to-br from-[#6c4df6] via-[#8b5cf6] to-[#ec4899] bg-clip-text text-transparent group-hover:brightness-110 transition-all duration-250 font-sans leading-none">
-          A
+          N
         </span>
       </div>
     </a>

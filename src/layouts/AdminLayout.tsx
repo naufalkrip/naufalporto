@@ -98,7 +98,7 @@ export const AdminLayout: React.FC = () => {
         <div className="h-16 flex items-center justify-between px-6 border-b border-slate-100 bg-white">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#6c4df6] to-[#ec4899] flex items-center justify-center text-white font-black text-sm shadow-sm">
-              A
+              N
             </div>
             <div>
               <span className="font-bold text-slate-900 text-sm tracking-tight block leading-tight">Admin Dashboard</span>
@@ -346,7 +346,7 @@ export const AdminLayout: React.FC = () => {
             <div className="flex items-center justify-between pb-6 border-b border-slate-100">
               <div className="flex items-center gap-2.5">
                 <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#6c4df6] to-[#ec4899] flex items-center justify-center text-white font-bold text-xs shadow-sm">
-                  A
+                  N
                 </div>
                 <span className="font-bold text-slate-900 text-base">Admin Dashboard</span>
               </div>
