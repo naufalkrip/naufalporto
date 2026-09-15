@@ -110,7 +110,7 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
             </div>
 
             {/* Short Intro */}
-            <p className="text-xs sm:text-base lg:text-lg text-slate-600 max-w-xl leading-relaxed font-normal line-clamp-3 sm:line-clamp-none">
+            <p className="text-xs sm:text-base lg:text-lg text-slate-600 max-w-xl leading-relaxed font-normal">
               {shortIntro}
             </p>
 

@@ -78,9 +78,6 @@ export const About: React.FC<AboutProps> = ({
       ? 'Saya menikmati mentransformasikan konsep abstrak menjadi karya visual dan antarmuka digital yang berdampak — mulai dari arsitektur web hingga identitas visual dan proyek kreatif.'
       : 'I enjoy turning ideas into visual and digital experiences — from websites and branding to content and creative projects.')
 
-  // Extract first 2-4 lines paragraph to prevent over-lengthening
-  const shortBioParagraph = fullBio.split('\n\n')[0] || fullBio
-
   const focusTitle =
     getLocalized(profile, 'professional_title', language) ||
     profile.professional_title ||
@@ -148,10 +145,12 @@ export const About: React.FC<AboutProps> = ({
                 {leadHeadline}
               </p>
 
-              {/* Short Concise Narrative Paragraph */}
-              <p className="text-xs sm:text-base text-slate-600 leading-relaxed max-w-[540px] font-normal mb-4 sm:mb-8 line-clamp-4 sm:line-clamp-none">
-                {shortBioParagraph}
-              </p>
+              {/* Full Narrative Paragraph(s) */}
+              <div className="space-y-3 mb-4 sm:mb-8 max-w-[540px]">
+                <p className="text-xs sm:text-base text-slate-600 leading-relaxed font-normal whitespace-pre-line">
+                  {fullBio}
+                </p>
+              </div>
             </div>
 
             {/* Thin Geometric Divider Accent */}
@@ -166,9 +165,9 @@ export const About: React.FC<AboutProps> = ({
               <div className="space-y-0.5 sm:space-y-1">
                 <div className="text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-slate-400 flex items-center gap-1 sm:gap-1.5">
                   <MapPin className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#ec4899] shrink-0" />
-                  <span className="truncate">{t('aboutBasedIn')}</span>
+                  <span>{t('aboutBasedIn')}</span>
                 </div>
-                <div className="text-[11px] sm:text-sm font-bold text-slate-800 tracking-tight truncate">
+                <div className="text-[11px] sm:text-sm font-bold text-slate-800 tracking-tight break-words">
                   {locationText}
                 </div>
               </div>
@@ -177,9 +176,9 @@ export const About: React.FC<AboutProps> = ({
               <div className="space-y-0.5 sm:space-y-1">
                 <div className="text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-slate-400 flex items-center gap-1 sm:gap-1.5">
                   <Compass className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#6c4df6] shrink-0" />
-                  <span className="truncate">{t('aboutFocus')}</span>
+                  <span>{t('aboutFocus')}</span>
                 </div>
-                <div className="text-[11px] sm:text-sm font-bold text-slate-800 tracking-tight truncate">
+                <div className="text-[11px] sm:text-sm font-bold text-slate-800 tracking-tight break-words">
                   {focusTitle}
                 </div>
               </div>
@@ -188,9 +187,9 @@ export const About: React.FC<AboutProps> = ({
               <div className="space-y-0.5 sm:space-y-1">
                 <div className="text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-slate-400 flex items-center gap-1 sm:gap-1.5">
                   <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-emerald-500 shrink-0" />
-                  <span className="truncate">{t('aboutAvailableFor')}</span>
+                  <span>{t('aboutAvailableFor')}</span>
                 </div>
-                <div className="text-[11px] sm:text-sm font-bold text-slate-800 tracking-tight truncate">
+                <div className="text-[11px] sm:text-sm font-bold text-slate-800 tracking-tight break-words">
                   {t('aboutAvailableValue')}
                 </div>
               </div>

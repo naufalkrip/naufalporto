@@ -112,7 +112,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
             </h2>
 
             {/* Subtitle / Description */}
-            <p className="text-xs sm:text-base text-slate-600 font-normal leading-relaxed line-clamp-2 sm:line-clamp-none">
+            <p className="text-xs sm:text-base text-slate-600 font-normal leading-relaxed">
               {categorySubtitle || categoryDesc || `Selected works and creative artifacts in ${categoryName}.`}
             </p>
           </div>

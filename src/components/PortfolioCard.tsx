@@ -98,7 +98,7 @@ export const PortfolioCard: React.FC<PortfolioCardProps> = ({
               {title}
             </h3>
 
-            <p className="text-xs sm:text-sm lg:text-base text-slate-600 leading-relaxed font-normal line-clamp-2 sm:line-clamp-3">
+            <p className="text-xs sm:text-sm lg:text-base text-slate-600 leading-relaxed font-normal">
               {description}
             </p>
           </div>
@@ -176,10 +176,10 @@ export const PortfolioCard: React.FC<PortfolioCardProps> = ({
               {categoryName}
             </div>
           )}
-          <h3 className="text-xs sm:text-lg lg:text-xl font-bold text-slate-900 group-hover:text-[#6c4df6] transition-colors leading-snug line-clamp-2">
+          <h3 className="text-xs sm:text-lg lg:text-xl font-bold text-slate-900 group-hover:text-[#6c4df6] transition-colors leading-snug">
             {title}
           </h3>
-          <p className="text-[11px] sm:text-sm text-slate-600 line-clamp-2 leading-relaxed font-normal">
+          <p className="text-[11px] sm:text-sm text-slate-600 leading-relaxed font-normal">
             {description}
           </p>
         </div>
