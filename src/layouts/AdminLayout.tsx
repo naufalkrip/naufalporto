@@ -97,7 +97,7 @@ export const AdminLayout: React.FC = () => {
         {/* Sidebar Brand Header */}
         <div className="h-16 flex items-center justify-between px-6 border-b border-slate-100 bg-white">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#6c4df6] to-[#ec4899] flex items-center justify-center text-white font-black text-sm shadow-sm">
+            <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-br from-[#6c4df6] to-[#ec4899] font-black text-sm shadow-2xs">
               N
             </div>
             <div>
@@ -345,7 +345,7 @@ export const AdminLayout: React.FC = () => {
           <aside className="relative flex flex-col w-72 bg-white text-slate-700 p-6 z-10 shadow-2xl border-r border-slate-200">
             <div className="flex items-center justify-between pb-6 border-b border-slate-100">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#6c4df6] to-[#ec4899] flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-br from-[#6c4df6] to-[#ec4899] font-bold text-xs shadow-2xs">
                   N
                 </div>
                 <span className="font-bold text-slate-900 text-base">Admin Dashboard</span>

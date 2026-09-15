@@ -39,11 +39,8 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ className = '' }) => {
       {/* Subtle outer gradient halo/glow on hover */}
       <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-[#6c4df6] via-[#ec4899] to-[#06b6d4] opacity-0 group-hover:opacity-40 blur-xs transition-opacity duration-300 pointer-events-none" />
 
-      {/* Monogram Box: small, proportional, sleek creative border */}
-      <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 shadow-2xs flex items-center justify-center transition-all duration-250 ease-out group-hover:scale-[1.04] group-hover:border-[#6c4df6]/40 group-hover:shadow-[0_4px_16px_rgba(108,77,246,0.18)] overflow-hidden">
-        {/* Subtle decorative gradient flare in the corner */}
-        <div className="absolute -top-3 -right-3 w-6 h-6 bg-gradient-to-br from-[#6c4df6]/25 to-[#ec4899]/25 rounded-full blur-[2px] pointer-events-none group-hover:opacity-100 transition-opacity duration-300" />
-
+      {/* Monogram Box: small, proportional, solid pure white background */}
+      <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white border border-slate-200 shadow-2xs flex items-center justify-center transition-all duration-250 ease-out group-hover:scale-[1.04] group-hover:border-[#6c4df6]/50 group-hover:shadow-[0_4px_16px_rgba(108,77,246,0.15)] overflow-hidden">
         {/* Monogram Letter "N" */}
         <span className="font-black text-sm sm:text-base tracking-tight bg-gradient-to-br from-[#6c4df6] via-[#8b5cf6] to-[#ec4899] bg-clip-text text-transparent group-hover:brightness-110 transition-all duration-250 font-sans leading-none">
           N
