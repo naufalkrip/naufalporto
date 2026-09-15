@@ -74,7 +74,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
     <section
       id={`category-${category.slug || category.id}`}
       data-category-index={index}
-      className="relative py-14 sm:py-18 flex flex-col justify-center bg-[#f8f8fa] border-t border-slate-200/60 overflow-hidden"
+      className="relative py-8 sm:py-14 lg:py-18 flex flex-col justify-center bg-[#f8f8fa] border-t border-slate-200/60 overflow-hidden"
     >
       {/* Chapter Ambient Glow */}
       <div
@@ -90,39 +90,39 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
         }}
       />
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 w-full relative z-10 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full relative z-10 space-y-4 sm:space-y-8">
         {/* Chapter Header Bar */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-slate-200/80">
-          <div className="space-y-2 max-w-2xl">
+        <div className="flex items-end justify-between gap-3 pb-3 sm:pb-4 border-b border-slate-200/80">
+          <div className="space-y-1 sm:space-y-2 max-w-2xl">
             {/* Chapter Pill Badge */}
-            <div className="inline-flex items-center gap-2">
-              <span className={`px-3 py-0.5 rounded-full text-xs font-mono font-bold border ${theme.badgeBg}`}>
+            <div className="inline-flex items-center gap-1.5 sm:gap-2">
+              <span className={`px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-mono font-bold border ${theme.badgeBg}`}>
                 {t('worksChapterLabel')} {chapterNumber}
               </span>
               {totalCategories > 1 && (
-                <span className="text-xs font-mono text-slate-400">
+                <span className="text-[10px] sm:text-xs font-mono text-slate-400">
                   / {String(totalCategories).padStart(2, '0')}
                 </span>
               )}
             </div>
 
             {/* Category Title */}
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
+            <h2 className="text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
               <span className={theme.textGradientClass}>{categoryName}</span>
             </h2>
 
             {/* Subtitle / Description */}
-            <p className="text-sm sm:text-base text-slate-600 font-normal leading-relaxed">
+            <p className="text-xs sm:text-base text-slate-600 font-normal leading-relaxed line-clamp-2 sm:line-clamp-none">
               {categorySubtitle || categoryDesc || `Selected works and creative artifacts in ${categoryName}.`}
             </p>
           </div>
 
           {/* Quick Counter */}
-          <div className="text-left md:text-right shrink-0">
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-400 block mb-1">
+          <div className="text-right shrink-0">
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-400 block mb-0.5 sm:mb-1">
               {t('worksCuratedCount')}
             </span>
-            <span className="text-2xl font-black text-slate-800 font-mono">
+            <span className="text-lg sm:text-2xl font-black text-slate-800 font-mono">
               {String(items.length).padStart(2, '0')}
             </span>
           </div>
@@ -130,14 +130,14 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
 
         {/* Project Presentation Layouts */}
         {items.length === 0 ? (
-          <div className="py-20 text-center bg-white rounded-3xl border border-slate-200/80 p-12 max-w-xl mx-auto space-y-3 shadow-2xs">
-            <FolderKanban className="w-10 h-10 text-slate-300 mx-auto" />
-            <h3 className="text-base font-bold text-slate-800">
+          <div className="py-12 sm:py-20 text-center bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-6 sm:p-12 max-w-xl mx-auto space-y-3 shadow-2xs">
+            <FolderKanban className="w-8 h-8 sm:w-10 sm:h-10 text-slate-300 mx-auto" />
+            <h3 className="text-sm sm:text-base font-bold text-slate-800">
               {t('worksEmpty')}
             </h3>
           </div>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-4 sm:space-y-8">
             {/* 1. Featured Primary Work */}
             {featuredItem && (
               <PortfolioCard
@@ -149,9 +149,9 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
               />
             )}
 
-            {/* 2. Secondary Works: Alternating or Grid Layout */}
+            {/* 2. Secondary Works: 2-Column Grid on Mobile and Desktop */}
             {secondaryItems.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 pt-2">
+              <div className="grid grid-cols-2 gap-3 sm:gap-6 pt-1 sm:pt-2">
                 {secondaryItems.map((item) => (
                   <PortfolioCard
                     key={item.id}

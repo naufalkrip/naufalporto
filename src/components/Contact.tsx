@@ -116,7 +116,7 @@ export const Contact: React.FC<ContactProps> = ({ profile, socials = [] }) => {
   return (
     <section
       id="contact"
-      className="relative py-20 sm:py-28 md:py-32 bg-[#f8f8fa] border-t border-slate-200/70 overflow-hidden"
+      className="relative py-12 sm:py-20 md:py-28 bg-[#f8f8fa] border-t border-slate-200/70 overflow-hidden"
     >
       {/* Colorful Controlled Ambient Gradients */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -154,60 +154,61 @@ export const Contact: React.FC<ContactProps> = ({ profile, socials = [] }) => {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
         {/* 1. Contact Heading & Subtext */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-slate-200/90 shadow-2xs backdrop-blur-xs">
-            <Sparkles className="w-3.5 h-3.5 text-[#ec4899]" />
-            <span className="text-[11px] font-black uppercase tracking-widest text-slate-700">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-16 space-y-2 sm:space-y-4">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-white/90 border border-slate-200/90 shadow-2xs backdrop-blur-xs">
+            <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#ec4899]" />
+            <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-slate-700">
               {t('contactBadge')}
             </span>
           </div>
 
-          <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-slate-900 leading-[0.98] sm:leading-[0.95]">
+          <h2 className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-slate-900 leading-[1.0] sm:leading-[0.95]">
             <span className="block">{t('contactHeadingPart1')}</span>
             <span className="block gradient-text-multi mt-1 sm:mt-2">
               {t('contactHeadingPart2')}
             </span>
           </h2>
 
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal pt-2">
+          <p className="text-xs sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal pt-1 sm:pt-2">
             {t('contactSubtitle')}
           </p>
         </div>
 
         {/* 2. Social & Platform Cards - STRICTLY SINGLE ROW (Fleksibel 1 baris, tidak pernah membuat baris kedua) */}
-        <div className="w-full max-w-6xl mx-auto mb-12 sm:mb-16 overflow-x-auto scrollbar-none pb-2 pt-1">
+        <div className="w-full max-w-6xl mx-auto mb-8 sm:mb-16 overflow-x-auto scrollbar-none pb-2 pt-1">
           <div
-            className={`flex flex-nowrap items-stretch justify-center gap-3.5 sm:gap-4 w-full min-w-max md:min-w-0`}
+            className={`flex flex-nowrap items-stretch justify-center gap-2.5 sm:gap-4 w-full min-w-max md:min-w-0`}
           >
             {/* Dedicated Profile Email Card */}
             {hasEmailCard && (
               <a
                 href={emailHref}
-                className="flex-1 min-w-[200px] sm:min-w-[210px] md:min-w-0 group relative bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-4 overflow-hidden"
+                className="flex-1 min-w-[170px] sm:min-w-[210px] md:min-w-0 group relative bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-3 sm:space-y-4 overflow-hidden"
               >
                 {/* Subtle gradient border accent on hover */}
                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#6c4df6] via-[#ec4899] to-[#f97316] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 <div className="flex items-start justify-between">
-                  <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 text-slate-700 group-hover:text-[#6c4df6] group-hover:bg-[#6c4df6]/10 group-hover:scale-105 transition-all duration-300 flex items-center justify-center shrink-0">
-                    <Mail size={20} />
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-slate-50 border border-slate-100 text-slate-700 group-hover:text-[#6c4df6] group-hover:bg-[#6c4df6]/10 group-hover:scale-105 transition-all duration-300 flex items-center justify-center shrink-0">
+                    <Mail size={16} className="sm:hidden" />
+                    <Mail size={20} className="hidden sm:block" />
                   </div>
 
                   <div className="flex items-center text-slate-400 group-hover:text-[#6c4df6] transition-colors">
-                    <span className="text-[10px] font-bold uppercase tracking-wider mr-1">
+                    <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider mr-1">
                       {t('contactSendEmailAction')}
                     </span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
+                    <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
                   </div>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 block mb-0.5">
+                  <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-slate-400 block mb-0.5">
                     {t('contactSendEmail')}
                   </span>
-                  <span className="text-sm sm:text-base font-black text-slate-900 group-hover:text-[#6c4df6] transition-colors truncate block">
+                  <span className="text-xs sm:text-base font-black text-slate-900 group-hover:text-[#6c4df6] transition-colors truncate block">
                     {profile.email}
                   </span>
                 </div>
@@ -230,29 +231,29 @@ export const Contact: React.FC<ContactProps> = ({ profile, socials = [] }) => {
                   href={href}
                   target={isEmail ? '_self' : '_blank'}
                   rel="noopener noreferrer"
-                  className="flex-1 min-w-[200px] sm:min-w-[210px] md:min-w-0 group relative bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-4 overflow-hidden"
+                  className="flex-1 min-w-[170px] sm:min-w-[210px] md:min-w-0 group relative bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-2xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-3 sm:space-y-4 overflow-hidden"
                 >
                   {/* Subtle gradient border accent on hover */}
                   <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#6c4df6] via-[#ec4899] to-[#f97316] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                   <div className="flex items-start justify-between">
-                    <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 text-slate-700 group-hover:text-[#6c4df6] group-hover:bg-[#6c4df6]/10 group-hover:scale-105 transition-all duration-300 flex items-center justify-center shrink-0">
-                      {renderPlatformIcon(social.platform, 20)}
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-slate-50 border border-slate-100 text-slate-700 group-hover:text-[#6c4df6] group-hover:bg-[#6c4df6]/10 group-hover:scale-105 transition-all duration-300 flex items-center justify-center shrink-0">
+                      {renderPlatformIcon(social.platform, 18)}
                     </div>
 
                     <div className="flex items-center text-slate-400 group-hover:text-[#6c4df6] transition-colors">
-                      <span className="text-[10px] font-bold uppercase tracking-wider mr-1">
+                      <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider mr-1">
                         {t('contactVisitAction')}
                       </span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
+                      <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 group-hover:translate-x-1 transition-transform duration-200" />
                     </div>
                   </div>
 
                   <div>
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 block mb-0.5">
+                    <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-slate-400 block mb-0.5">
                       {social.platform}
                     </span>
-                    <span className="text-sm sm:text-base font-black text-slate-900 group-hover:text-[#6c4df6] transition-colors truncate block">
+                    <span className="text-xs sm:text-base font-black text-slate-900 group-hover:text-[#6c4df6] transition-colors truncate block">
                       {social.username ? `@${social.username.replace(/^@/, '')}` : localizedLabel}
                     </span>
                   </div>
@@ -269,12 +270,12 @@ export const Contact: React.FC<ContactProps> = ({ profile, socials = [] }) => {
             onClick={() => {
               window.location.href = emailHref
             }}
-            className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-[#6c4df6] via-[#ec4899] to-[#f97316] text-white font-black text-sm sm:text-base tracking-wide shadow-lg shadow-[#6c4df6]/25 hover:shadow-2xl hover:shadow-[#ec4899]/35 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+            className="group relative inline-flex items-center gap-2 sm:gap-3 px-7 py-3.5 sm:px-10 sm:py-5 rounded-full bg-gradient-to-r from-[#6c4df6] via-[#ec4899] to-[#f97316] text-white font-black text-xs sm:text-base tracking-wide shadow-lg shadow-[#6c4df6]/25 hover:shadow-2xl hover:shadow-[#ec4899]/35 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 cursor-pointer"
             title={`Send Email directly to ${targetEmail}`}
             aria-label={`Send Email directly to ${targetEmail}`}
           >
             <span className="relative z-10">{t('contactCta')}</span>
-            <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1.5 transition-transform duration-300" />
+            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 relative z-10 group-hover:translate-x-1.5 transition-transform duration-300" />
             <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </a>
         </div>
