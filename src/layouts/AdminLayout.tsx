@@ -91,17 +91,17 @@ export const AdminLayout: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-[#f8f8fa] flex">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-slate-300 border-r border-slate-800 shrink-0">
+      <aside className="hidden lg:flex flex-col w-64 bg-white text-slate-700 border-r border-slate-200/80 shrink-0 shadow-2xs">
         {/* Sidebar Brand Header */}
-        <div className="h-16 flex items-center justify-between px-6 border-b border-slate-800">
+        <div className="h-16 flex items-center justify-between px-6 border-b border-slate-100 bg-white">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#6c4df6] to-[#ec4899] flex items-center justify-center text-white font-black text-sm shadow-sm">
               A
             </div>
             <div>
-              <span className="font-bold text-white text-sm tracking-tight block leading-tight">Admin Dashboard</span>
+              <span className="font-bold text-slate-900 text-sm tracking-tight block leading-tight">Admin Dashboard</span>
               <span className="text-[10px] text-slate-400 font-medium">Control Center</span>
             </div>
           </div>
@@ -114,10 +114,10 @@ export const AdminLayout: React.FC = () => {
             to="/admin"
             end
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-colors ${
+              `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 isActive
-                  ? 'bg-sky-500 text-slate-950 shadow-xs'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  ? 'bg-[#6c4df6] text-white shadow-sm shadow-[#6c4df6]/25 font-bold'
+                  : 'text-slate-600 hover:text-slate-950 hover:bg-slate-100/80'
               }`
             }
           >
@@ -129,10 +129,10 @@ export const AdminLayout: React.FC = () => {
           <NavLink
             to="/admin/profile"
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-colors ${
+              `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 isActive
-                  ? 'bg-sky-500 text-slate-950 shadow-xs'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  ? 'bg-[#6c4df6] text-white shadow-sm shadow-[#6c4df6]/25 font-bold'
+                  : 'text-slate-600 hover:text-slate-950 hover:bg-slate-100/80'
               }`
             }
           >
@@ -144,10 +144,10 @@ export const AdminLayout: React.FC = () => {
           <NavLink
             to="/admin/experience"
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-colors ${
+              `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 isActive
-                  ? 'bg-sky-500 text-slate-950 shadow-xs'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  ? 'bg-[#6c4df6] text-white shadow-sm shadow-[#6c4df6]/25 font-bold'
+                  : 'text-slate-600 hover:text-slate-950 hover:bg-slate-100/80'
               }`
             }
           >
@@ -157,18 +157,18 @@ export const AdminLayout: React.FC = () => {
 
           {/* Portfolio Section */}
           <div className="pt-3 pb-1">
-            <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+            <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
               <FolderGit2 className="w-3.5 h-3.5 text-slate-400" />
               <span>Portfolio</span>
             </div>
-            <div className="pl-3 space-y-1 mt-1 border-l-2 border-slate-800 ml-3">
+            <div className="pl-3 space-y-1 mt-1 border-l-2 border-slate-100 ml-3">
               <NavLink
                 to="/admin/portfolio/categories"
                 className={({ isActive }) =>
-                  `flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                  `flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                     isActive || location.pathname === '/admin/categories'
-                      ? 'bg-sky-500/20 text-sky-300 font-semibold'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                      ? 'bg-[#6c4df6]/10 text-[#6c4df6] font-bold'
+                      : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/70'
                   }`
                 }
               >
@@ -178,10 +178,10 @@ export const AdminLayout: React.FC = () => {
               <NavLink
                 to="/admin/portfolio/projects"
                 className={({ isActive }) =>
-                  `flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                  `flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                     isActive || location.pathname === '/admin/portfolio'
-                      ? 'bg-sky-500/20 text-sky-300 font-semibold'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                      ? 'bg-[#6c4df6]/10 text-[#6c4df6] font-bold'
+                      : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/70'
                   }`
                 }
               >
@@ -193,18 +193,18 @@ export const AdminLayout: React.FC = () => {
 
           {/* Contact Section */}
           <div className="pt-2 pb-1">
-            <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+            <div className="px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
               <Mail className="w-3.5 h-3.5 text-slate-400" />
               <span>Contact</span>
             </div>
-            <div className="pl-3 space-y-1 mt-1 border-l-2 border-slate-800 ml-3">
+            <div className="pl-3 space-y-1 mt-1 border-l-2 border-slate-100 ml-3">
               <NavLink
                 to="/admin/contact"
                 className={({ isActive }) =>
-                  `flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                  `flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                     isActive
-                      ? 'bg-sky-500/20 text-sky-300 font-semibold'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                      ? 'bg-[#6c4df6]/10 text-[#6c4df6] font-bold'
+                      : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/70'
                   }`
                 }
               >
@@ -214,10 +214,10 @@ export const AdminLayout: React.FC = () => {
               <NavLink
                 to="/admin/socials"
                 className={({ isActive }) =>
-                  `flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                  `flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                     isActive
-                      ? 'bg-sky-500/20 text-sky-300 font-semibold'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                      ? 'bg-[#6c4df6]/10 text-[#6c4df6] font-bold'
+                      : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100/70'
                   }`
                 }
               >
@@ -232,10 +232,10 @@ export const AdminLayout: React.FC = () => {
             <NavLink
               to="/admin/settings"
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-colors ${
+                `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                   isActive
-                    ? 'bg-sky-500 text-slate-950 shadow-xs'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-[#6c4df6] text-white shadow-sm shadow-[#6c4df6]/25 font-bold'
+                    : 'text-slate-600 hover:text-slate-950 hover:bg-slate-100/80'
                 }`
               }
             >
@@ -246,13 +246,13 @@ export const AdminLayout: React.FC = () => {
         </nav>
 
         {/* Backend Connection Indicator & Logout */}
-        <div className="p-4 border-t border-slate-800 space-y-3">
-          <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/50">
+        <div className="p-4 border-t border-slate-100 space-y-3 bg-white">
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
             <div className="flex items-center gap-2 mb-1">
-              <Database className="w-3.5 h-3.5 text-sky-400" />
-              <span className="text-[11px] font-semibold text-slate-300">Data Source</span>
+              <Database className="w-3.5 h-3.5 text-[#6c4df6]" />
+              <span className="text-[11px] font-semibold text-slate-700">Data Source</span>
             </div>
-            <div className="text-[10px] text-slate-400 flex items-center gap-1.5">
+            <div className="text-[10px] text-slate-500 flex items-center gap-1.5">
               <span
                 className={`w-1.5 h-1.5 rounded-full ${
                   isLiveApiConfigured ? 'bg-emerald-500' : 'bg-amber-400'
@@ -263,14 +263,14 @@ export const AdminLayout: React.FC = () => {
           </div>
 
           <div className="flex items-center justify-between pt-1">
-            <div className="text-xs text-slate-400 truncate">
-              <span className="font-medium text-white">{adminUser?.username || 'admin'}</span>
-              <div className="text-[10px] text-slate-500 capitalize">{adminUser?.role || 'administrator'}</div>
+            <div className="text-xs text-slate-600 truncate">
+              <span className="font-bold text-slate-900">{adminUser?.username || 'admin'}</span>
+              <div className="text-[10px] text-slate-400 capitalize">{adminUser?.role || 'administrator'}</div>
             </div>
 
             <button
               onClick={handleLogout}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 rounded-lg transition-colors text-xs font-medium"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-lg border border-rose-100/60 transition-colors text-xs font-semibold"
               title="Log out"
               aria-label="Log out"
             >
@@ -342,17 +342,17 @@ export const AdminLayout: React.FC = () => {
             className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs"
             onClick={() => setMobileSidebarOpen(false)}
           />
-          <aside className="relative flex flex-col w-72 bg-slate-900 text-slate-300 p-6 z-10 shadow-2xl">
-            <div className="flex items-center justify-between pb-6 border-b border-slate-800">
+          <aside className="relative flex flex-col w-72 bg-white text-slate-700 p-6 z-10 shadow-2xl border-r border-slate-200">
+            <div className="flex items-center justify-between pb-6 border-b border-slate-100">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#6c4df6] to-[#ec4899] flex items-center justify-center text-white font-bold text-xs">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#6c4df6] to-[#ec4899] flex items-center justify-center text-white font-bold text-xs shadow-sm">
                   A
                 </div>
-                <span className="font-bold text-white text-base">Admin Dashboard</span>
+                <span className="font-bold text-slate-900 text-base">Admin Dashboard</span>
               </div>
               <button
                 onClick={() => setMobileSidebarOpen(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white"
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -363,8 +363,8 @@ export const AdminLayout: React.FC = () => {
                 to="/admin"
                 end
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-                    isActive ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                    isActive ? 'bg-[#6c4df6] text-white shadow-sm shadow-[#6c4df6]/25 font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`
                 }
               >
@@ -375,8 +375,8 @@ export const AdminLayout: React.FC = () => {
               <NavLink
                 to="/admin/profile"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-                    isActive ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                    isActive ? 'bg-[#6c4df6] text-white shadow-sm shadow-[#6c4df6]/25 font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`
                 }
               >
@@ -387,8 +387,8 @@ export const AdminLayout: React.FC = () => {
               <NavLink
                 to="/admin/experience"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-                    isActive ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                    isActive ? 'bg-[#6c4df6] text-white shadow-sm shadow-[#6c4df6]/25 font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`
                 }
               >
@@ -397,13 +397,13 @@ export const AdminLayout: React.FC = () => {
               </NavLink>
 
               <div className="pt-2">
-                <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">Portfolio</div>
+                <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">Portfolio</div>
                 <div className="pl-2 space-y-1">
                   <NavLink
                     to="/admin/portfolio/categories"
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                        isActive ? 'bg-sky-500/20 text-sky-300' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      `flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
+                        isActive ? 'bg-[#6c4df6]/10 text-[#6c4df6]' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
                       }`
                     }
                   >
@@ -413,8 +413,8 @@ export const AdminLayout: React.FC = () => {
                   <NavLink
                     to="/admin/portfolio/projects"
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                        isActive ? 'bg-sky-500/20 text-sky-300' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      `flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
+                        isActive ? 'bg-[#6c4df6]/10 text-[#6c4df6]' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
                       }`
                     }
                   >
@@ -425,13 +425,13 @@ export const AdminLayout: React.FC = () => {
               </div>
 
               <div className="pt-2">
-                <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">Contact</div>
+                <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">Contact</div>
                 <div className="pl-2 space-y-1">
                   <NavLink
                     to="/admin/contact"
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                        isActive ? 'bg-sky-500/20 text-sky-300' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      `flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
+                        isActive ? 'bg-[#6c4df6]/10 text-[#6c4df6]' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
                       }`
                     }
                   >
@@ -441,8 +441,8 @@ export const AdminLayout: React.FC = () => {
                   <NavLink
                     to="/admin/socials"
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                        isActive ? 'bg-sky-500/20 text-sky-300' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      `flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
+                        isActive ? 'bg-[#6c4df6]/10 text-[#6c4df6]' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
                       }`
                     }
                   >
@@ -455,8 +455,8 @@ export const AdminLayout: React.FC = () => {
               <NavLink
                 to="/admin/settings"
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-                    isActive ? 'bg-sky-500 text-slate-950' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                    isActive ? 'bg-[#6c4df6] text-white shadow-sm shadow-[#6c4df6]/25 font-bold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   }`
                 }
               >
@@ -467,7 +467,7 @@ export const AdminLayout: React.FC = () => {
 
             <button
               onClick={handleLogout}
-              className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold text-rose-400 bg-rose-950/30 hover:bg-rose-950/60 transition-colors w-full border border-rose-900/40"
+              className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition-colors w-full border border-rose-200"
             >
               <LogOut className="w-4 h-4" />
               <span>LOGOUT</span>
