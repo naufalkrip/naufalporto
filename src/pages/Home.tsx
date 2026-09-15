@@ -7,6 +7,7 @@ import { WorksShowcase } from '../components/WorksShowcase'
 import { Contact } from '../components/Contact'
 import { Footer } from '../components/Footer'
 import { BackgroundSprinkles } from '../components/BackgroundSprinkles'
+import { AmbientSoundPlayer } from '../components/AmbientSoundPlayer'
 import { useProfile } from '../hooks/useProfile'
 import { useCategories } from '../hooks/useCategories'
 import { usePortfolio } from '../hooks/usePortfolio'
@@ -79,6 +80,9 @@ const HomeContent: React.FC = () => {
 
       {/* 7. Footer */}
       <Footer profile={profile} footerText={settings?.footer_text} />
+
+      {/* Floating Calm & Dynamic Ambient Sound Player */}
+      <AmbientSoundPlayer />
     </div>
   )
 }
