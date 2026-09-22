@@ -109,12 +109,13 @@ export const PortfolioManager: React.FC = () => {
   const openCreateModal = () => {
     setEditingItem(null)
     setActiveTab('info')
+    const firstCat = categories.length > 0 ? categories[0] : null
     setFormData({
       title: '',
       title_id: '',
       title_en: '',
-      category: categories.length > 0 ? categories[0].name : '',
-      category_id: categories.length > 0 ? categories[0].id : '',
+      category: firstCat ? firstCat.name : '',
+      category_id: firstCat ? firstCat.id : '',
       description: '',
       description_id: '',
       description_en: '',
@@ -133,8 +134,11 @@ export const PortfolioManager: React.FC = () => {
     setActiveTab(initialTab)
     setShowMediaForm(false)
     setShowLinkForm(false)
+    const matchingCat = categories.find(c => c.id === item.category_id || c.name === item.category)
     setFormData({
       ...item,
+      category: matchingCat ? matchingCat.name : (item.category || ''),
+      category_id: matchingCat ? matchingCat.id : (item.category_id || ''),
       title_id: item.title_id || item.title || '',
       title_en: item.title_en || item.title || '',
       description_id: item.description_id || item.description || '',
@@ -240,10 +244,17 @@ export const PortfolioManager: React.FC = () => {
 
     const primaryTitle = formData.title_en || formData.title_id || formData.title
     const primaryDesc = formData.description_en || formData.description_id || formData.description
-    const primaryCategory = formData.category || (categories[0]?.name ?? '')
 
-    if (!primaryTitle?.trim() || !primaryCategory?.trim() || !primaryDesc?.trim()) {
-      showToast('Title, category, and description are required fields.', 'error')
+    // Resolve category and category_id consistently
+    const selectedCat =
+      categories.find((c) => c.id === formData.category_id) ||
+      categories.find((c) => c.name === formData.category) ||
+      categories[0]
+    const primaryCategory = selectedCat ? selectedCat.name : (formData.category || 'General')
+    const finalCategoryId = selectedCat ? selectedCat.id : (formData.category_id || 'cat_default')
+
+    if (!primaryTitle?.trim() || !primaryDesc?.trim()) {
+      showToast('Title and description are required fields.', 'error')
       return
     }
 
@@ -256,7 +267,7 @@ export const PortfolioManager: React.FC = () => {
       description_id: formData.description_id || primaryDesc,
       description_en: formData.description_en || primaryDesc,
       category: primaryCategory,
-      category_id: formData.category_id || primaryCategory,
+      category_id: finalCategoryId,
       year: formData.year || new Date().getFullYear().toString(),
       project_url: formData.project_url || '',
       cover_image: formData.cover_image || '',
@@ -746,20 +757,25 @@ export const PortfolioManager: React.FC = () => {
                     </label>
                     {categories.length > 0 ? (
                       <select
-                        name="category"
-                        value={formData.category || (categories[0]?.name ?? '')}
+                        name="category_id"
+                        value={
+                          formData.category_id ||
+                          categories.find((c) => c.name === formData.category)?.id ||
+                          categories[0]?.id ||
+                          ''
+                        }
                         onChange={(e) => {
-                          const selectedCat = categories.find((c) => c.name === e.target.value)
+                          const selectedCat = categories.find((c) => c.id === e.target.value)
                           setFormData((prev) => ({
                             ...prev,
-                            category: e.target.value,
-                            category_id: selectedCat ? selectedCat.id : prev.category_id
+                            category_id: e.target.value,
+                            category: selectedCat ? selectedCat.name : prev.category
                           }))
                         }}
                         className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:bg-white focus:outline-none focus:border-sky-500"
                       >
                         {categories.map((cat) => (
-                          <option key={cat.id} value={cat.name}>
+                          <option key={cat.id} value={cat.id}>
                             {cat.name} {cat.name_id && cat.name_id !== cat.name ? `(${cat.name_id})` : ''}
                           </option>
                         ))}

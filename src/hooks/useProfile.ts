@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { apiGet, apiPost } from '../services/api'
+import { onRealtimeSync, emitRealtimeUpdate } from '../services/realtimeSync'
 import type { Profile } from '../types'
 
 export function useProfile(autoSync: boolean = false) {
@@ -29,11 +30,23 @@ export function useProfile(autoSync: boolean = false) {
   useEffect(() => {
     fetchProfile()
 
-    if (autoSync) {
-      const interval = setInterval(() => {
+    // Realtime sync: immediately reload when profile updates anywhere
+    const unsubscribe = onRealtimeSync((entity) => {
+      if (entity === 'profile' || entity === 'all') {
         fetchProfile(true)
-      }, 25000)
-      return () => clearInterval(interval)
+      }
+    })
+
+    let interval: ReturnType<typeof setInterval> | null = null
+    if (autoSync) {
+      interval = setInterval(() => {
+        fetchProfile(true)
+      }, 15000)
+    }
+
+    return () => {
+      unsubscribe()
+      if (interval) clearInterval(interval)
     }
   }, [fetchProfile, autoSync])
 
@@ -48,6 +61,7 @@ export function useProfile(autoSync: boolean = false) {
       }
       if (data) {
         setProfile(prev => ({ ...prev, ...data } as Profile))
+        emitRealtimeUpdate('profile')
         return true
       }
       return false

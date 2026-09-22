@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { apiGet, apiPost } from '../services/api'
+import { onRealtimeSync, emitRealtimeUpdate } from '../services/realtimeSync'
 import type { PortfolioCategory } from '../types'
 
 export function useCategories(statusFilter: 'published' | 'all' = 'published', autoSync: boolean = false) {
@@ -32,11 +33,23 @@ export function useCategories(statusFilter: 'published' | 'all' = 'published', a
   useEffect(() => {
     fetchCategories()
 
-    if (autoSync) {
-      const interval = setInterval(() => {
+    // Realtime sync: immediately reload when categories or all entities update
+    const unsubscribe = onRealtimeSync((entity) => {
+      if (entity === 'categories' || entity === 'all') {
         fetchCategories(true)
-      }, 25000)
-      return () => clearInterval(interval)
+      }
+    })
+
+    let interval: ReturnType<typeof setInterval> | null = null
+    if (autoSync) {
+      interval = setInterval(() => {
+        fetchCategories(true)
+      }, 15000)
+    }
+
+    return () => {
+      unsubscribe()
+      if (interval) clearInterval(interval)
     }
   }, [fetchCategories, autoSync])
 
@@ -50,6 +63,7 @@ export function useCategories(statusFilter: 'published' | 'all' = 'published', a
       }
       if (data) {
         await fetchCategories(true)
+        emitRealtimeUpdate('categories')
         return true
       }
       return false
@@ -71,6 +85,7 @@ export function useCategories(statusFilter: 'published' | 'all' = 'published', a
       }
       if (data) {
         await fetchCategories(true)
+        emitRealtimeUpdate('categories')
         return true
       }
       return false
@@ -91,6 +106,7 @@ export function useCategories(statusFilter: 'published' | 'all' = 'published', a
         return false
       }
       setCategories(prev => prev.filter(c => c.id !== id))
+      emitRealtimeUpdate('categories')
       return true
     } catch (err: any) {
       setError(err.message || 'Failed to delete category')
@@ -105,6 +121,7 @@ export function useCategories(statusFilter: 'published' | 'all' = 'published', a
       const { error: apiErr } = await apiPost('reorderCategories', { orderMap })
       if (!apiErr) {
         await fetchCategories(true)
+        emitRealtimeUpdate('categories')
         return true
       }
       return false

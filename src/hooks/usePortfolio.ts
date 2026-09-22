@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { apiGet, apiPost } from '../services/api'
+import { onRealtimeSync, emitRealtimeUpdate } from '../services/realtimeSync'
 import type { PortfolioItem } from '../types'
 
 export function usePortfolio(statusFilter: 'published' | 'all' = 'published', autoSync: boolean = false, categoryId?: string) {
@@ -40,11 +41,29 @@ export function usePortfolio(statusFilter: 'published' | 'all' = 'published', au
   useEffect(() => {
     fetchItems()
 
-    if (autoSync) {
-      const interval = setInterval(() => {
+    // Realtime sync: trigger immediate 0ms reload on any portfolio or category update
+    const unsubscribe = onRealtimeSync((entity) => {
+      if (
+        entity === 'portfolio' ||
+        entity === 'categories' ||
+        entity === 'portfolio_media' ||
+        entity === 'portfolio_links' ||
+        entity === 'all'
+      ) {
         fetchItems(true)
-      }, 20000)
-      return () => clearInterval(interval)
+      }
+    })
+
+    let interval: ReturnType<typeof setInterval> | null = null
+    if (autoSync) {
+      interval = setInterval(() => {
+        fetchItems(true)
+      }, 15000)
+    }
+
+    return () => {
+      unsubscribe()
+      if (interval) clearInterval(interval)
     }
   }, [fetchItems, autoSync])
 
@@ -58,6 +77,7 @@ export function usePortfolio(statusFilter: 'published' | 'all' = 'published', au
       }
       if (data) {
         await fetchItems(true)
+        emitRealtimeUpdate('portfolio')
         return true
       }
       return false
@@ -79,6 +99,7 @@ export function usePortfolio(statusFilter: 'published' | 'all' = 'published', au
       }
       if (data) {
         await fetchItems(true)
+        emitRealtimeUpdate('portfolio')
         return true
       }
       return false
@@ -99,6 +120,7 @@ export function usePortfolio(statusFilter: 'published' | 'all' = 'published', au
         return false
       }
       setItems(prev => prev.filter(i => i.id !== id))
+      emitRealtimeUpdate('portfolio')
       return true
     } catch (err: any) {
       setError(err.message || 'Failed to delete item')
@@ -113,6 +135,7 @@ export function usePortfolio(statusFilter: 'published' | 'all' = 'published', au
       const { error: apiErr } = await apiPost('setFeaturedPortfolio', { category_id, portfolio_id })
       if (!apiErr) {
         await fetchItems(true)
+        emitRealtimeUpdate('portfolio')
         return true
       }
       return false

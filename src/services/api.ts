@@ -23,6 +23,8 @@ import {
   INITIAL_DEMO_SOCIALS
 } from '../data/demoData'
 
+import { emitRealtimeUpdate, type RealtimeEntity } from './realtimeSync'
+
 const envUrl = import.meta.env.VITE_APPS_SCRIPT_URL
 
 // Check if Apps Script is configured with a real URL
@@ -41,6 +43,18 @@ export function setApiUrl(url: string) {
 
 export function getApiUrl(): string {
   return apiBaseUrl
+}
+
+function mapActionToEntity(action: string): RealtimeEntity {
+  if (action.includes('Profile')) return 'profile'
+  if (action.includes('Category') || action.includes('Categories')) return 'categories'
+  if (action.includes('PortfolioMedia')) return 'portfolio_media'
+  if (action.includes('PortfolioLink')) return 'portfolio_links'
+  if (action.includes('Portfolio')) return 'portfolio'
+  if (action.includes('Experience')) return 'experiences'
+  if (action.includes('Social')) return 'socials'
+  if (action.includes('Setting')) return 'settings'
+  return 'all'
 }
 
 // Local mock storage keys for offline/demo mode
@@ -78,7 +92,7 @@ function setLocalData<T>(key: string, data: T): void {
 }
 
 /**
- * Handle API GET requests with fallback
+ * Handle API GET requests with resilient fallback
  */
 export async function apiGet<T>(
   action: string,
@@ -92,49 +106,56 @@ export async function apiGet<T>(
       Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v))
 
       const response = await axios.get<ApiResponse<T>>(url.toString(), {
-        timeout: 12000
+        timeout: 5000
       })
 
-      if (response.data && response.data.success) {
+      // Verify response is legitimate JSON object with success: true
+      if (response.data && typeof response.data === 'object' && response.data.success) {
         return { data: response.data.data as T, error: null, isDemo: false }
       }
-      return { data: null, error: response.data.message || 'API request failed', isDemo: false }
+      console.warn(`[AppsScript API] Non-JSON or unsuccessful GET response for ${action}, falling back to local storage store`)
     } catch (err: any) {
-      console.warn(`[AppsScript API] Failed GET for ${action}, falling back to local demo data:`, err.message)
+      console.warn(`[AppsScript API] Failed GET for ${action}, falling back to local storage store:`, err.message)
     }
   }
 
-  // Fallback to local demo data
+  // Resilient fallback to local demo data
   const mockData = getMockDataForAction<T>(action, params)
   return { data: mockData, error: null, isDemo: true }
 }
 
 /**
- * Handle API POST requests with fallback
+ * Handle API POST requests with resilient fallback & immediate realtime sync
  */
 export async function apiPost<T>(
   action: string,
   payload: any
 ): Promise<{ data: T | null; error: string | null; isDemo: boolean }> {
+  const entity = mapActionToEntity(action)
+
   if (isLiveApiConfigured) {
     try {
       const url = `${apiBaseUrl}?action=${action}`
       const response = await axios.post<ApiResponse<T>>(url, JSON.stringify({ ...payload, action }), {
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        timeout: 15000
+        timeout: 6000
       })
 
-      if (response.data && response.data.success) {
+      if (response.data && typeof response.data === 'object' && response.data.success) {
+        // Keep local store synchronized with live data
+        mutateMockData<T>(action, payload)
+        emitRealtimeUpdate(entity)
         return { data: (response.data.data ?? response.data) as T, error: null, isDemo: false }
       }
-      return { data: null, error: response.data.message || 'Action failed', isDemo: false }
+      console.warn(`[AppsScript API] Non-JSON or unsuccessful POST response for ${action}, mutating local store`)
     } catch (err: any) {
-      console.warn(`[AppsScript API] Failed POST for ${action}, mutating local demo store:`, err.message)
+      console.warn(`[AppsScript API] Failed POST for ${action}, mutating local store:`, err.message)
     }
   }
 
   // Fallback to local mutation
   const mockResult = mutateMockData<T>(action, payload)
+  emitRealtimeUpdate(entity)
   return { data: mockResult, error: null, isDemo: true }
 }
 
@@ -163,23 +184,24 @@ function getMockDataForAction<T>(action: string, params: Record<string, string>)
       const allLinks = getLocalData<PortfolioLink[]>(LOCAL_STORAGE_KEYS.PORTFOLIO_LINKS, INITIAL_DEMO_PORTFOLIO_LINKS)
 
       if (params.status && params.status !== 'all') {
-        items = items.filter(i => i.status === params.status)
+        items = items.filter(i => (i.status || 'published') === params.status)
       }
       if (params.category_id) {
-        items = items.filter(i => i.category_id === params.category_id)
+        items = items.filter(i => String(i.category_id) === String(params.category_id) || String(i.category) === String(params.category_id))
       }
 
       // Attach media_count, media, and links
       items = items.map(item => {
         const itemMedia = allMedia
-          .filter(m => m.portfolio_id === item.id && (params.status === 'all' ? true : m.status === 'published'))
-          .sort((a, b) => a.display_order - b.display_order)
+          .filter(m => m.portfolio_id === item.id && (params.status === 'all' ? true : (m.status || 'published') === 'published'))
+          .sort((a, b) => (Number(a.display_order) || 99) - (Number(b.display_order) || 99))
         const itemLinks = allLinks
-          .filter(l => l.portfolio_id === item.id && (params.status === 'all' ? true : l.status === 'published'))
-          .sort((a, b) => a.display_order - b.display_order)
+          .filter(l => l.portfolio_id === item.id && (params.status === 'all' ? true : (l.status || 'published') === 'published'))
+          .sort((a, b) => (Number(a.display_order) || 99) - (Number(b.display_order) || 99))
 
         return {
           ...item,
+          status: item.status || 'published',
           media_count: itemMedia.length > 0 ? itemMedia.length : 1,
           media: itemMedia,
           links: itemLinks
@@ -190,7 +212,7 @@ function getMockDataForAction<T>(action: string, params: Record<string, string>)
         const featA = a.featured ? 1 : 0
         const featB = b.featured ? 1 : 0
         if (featA !== featB) return featB - featA
-        return a.display_order - b.display_order
+        return (Number(a.display_order) || 99) - (Number(b.display_order) || 99)
       }) as unknown as T
     }
 

@@ -6,6 +6,7 @@ import {
   deletePortfolioMediaApi,
   reorderPortfolioMediaApi
 } from '../services/api'
+import { onRealtimeSync, emitRealtimeUpdate } from '../services/realtimeSync'
 import type { PortfolioMedia } from '../types'
 
 export function usePortfolioMedia(portfolioId?: string, statusFilter: 'published' | 'all' = 'published') {
@@ -32,6 +33,16 @@ export function usePortfolioMedia(portfolioId?: string, statusFilter: 'published
 
   useEffect(() => {
     fetchMedia()
+
+    const unsubscribe = onRealtimeSync((entity) => {
+      if (entity === 'portfolio_media' || entity === 'portfolio' || entity === 'all') {
+        fetchMedia(true)
+      }
+    })
+
+    return () => {
+      unsubscribe()
+    }
   }, [fetchMedia])
 
   const addMedia = async (newMedia: Partial<PortfolioMedia>): Promise<boolean> => {
@@ -43,6 +54,8 @@ export function usePortfolioMedia(portfolioId?: string, statusFilter: 'published
         return false
       }
       await fetchMedia(true)
+      emitRealtimeUpdate('portfolio_media')
+      emitRealtimeUpdate('portfolio')
       return true
     } catch (err: any) {
       setError(err.message)
@@ -61,6 +74,8 @@ export function usePortfolioMedia(portfolioId?: string, statusFilter: 'published
         return false
       }
       await fetchMedia(true)
+      emitRealtimeUpdate('portfolio_media')
+      emitRealtimeUpdate('portfolio')
       return true
     } catch (err: any) {
       setError(err.message)
@@ -79,6 +94,8 @@ export function usePortfolioMedia(portfolioId?: string, statusFilter: 'published
         return false
       }
       await fetchMedia(true)
+      emitRealtimeUpdate('portfolio_media')
+      emitRealtimeUpdate('portfolio')
       return true
     } catch (err: any) {
       setError(err.message)
@@ -96,6 +113,8 @@ export function usePortfolioMedia(portfolioId?: string, statusFilter: 'published
         return false
       }
       await fetchMedia(true)
+      emitRealtimeUpdate('portfolio_media')
+      emitRealtimeUpdate('portfolio')
       return true
     } catch (err: any) {
       setError(err.message)

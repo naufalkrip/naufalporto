@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { apiGet, apiPost } from '../services/api'
+import { onRealtimeSync, emitRealtimeUpdate } from '../services/realtimeSync'
 import type { Experience } from '../types'
 
 export function useExperience(statusFilter: 'published' | 'all' = 'published', autoSync: boolean = false) {
@@ -41,11 +42,23 @@ export function useExperience(statusFilter: 'published' | 'all' = 'published', a
   useEffect(() => {
     fetchExperiences()
 
-    if (autoSync) {
-      const interval = setInterval(() => {
+    // Realtime sync: reload immediately when experiences change
+    const unsubscribe = onRealtimeSync((entity) => {
+      if (entity === 'experiences' || entity === 'all') {
         fetchExperiences(true)
-      }, 25000)
-      return () => clearInterval(interval)
+      }
+    })
+
+    let interval: ReturnType<typeof setInterval> | null = null
+    if (autoSync) {
+      interval = setInterval(() => {
+        fetchExperiences(true)
+      }, 15000)
+    }
+
+    return () => {
+      unsubscribe()
+      if (interval) clearInterval(interval)
     }
   }, [fetchExperiences, autoSync])
 
@@ -61,6 +74,7 @@ export function useExperience(statusFilter: 'published' | 'all' = 'published', a
       }
       if (data) {
         await fetchExperiences(true)
+        emitRealtimeUpdate('experiences')
         return true
       }
       return false
@@ -81,6 +95,7 @@ export function useExperience(statusFilter: 'published' | 'all' = 'published', a
         return false
       }
       await fetchExperiences(true)
+      emitRealtimeUpdate('experiences')
       return true
     } catch (err: any) {
       setError(err.message || 'Failed to update experience')
@@ -99,6 +114,7 @@ export function useExperience(statusFilter: 'published' | 'all' = 'published', a
         return false
       }
       await fetchExperiences(true)
+      emitRealtimeUpdate('experiences')
       return true
     } catch (err: any) {
       setError(err.message || 'Failed to delete experience')
@@ -116,6 +132,7 @@ export function useExperience(statusFilter: 'published' | 'all' = 'published', a
         return false
       }
       await fetchExperiences(true)
+      emitRealtimeUpdate('experiences')
       return true
     } catch (err: any) {
       setError(err.message || 'Failed to reorder experiences')

@@ -26,26 +26,87 @@ export const WorksShowcase: React.FC<WorksShowcaseProps> = ({
   const [activeCategoryForProject, setActiveCategoryForProject] = useState<PortfolioCategory | null>(null)
   const [activeCategoryProjects, setActiveCategoryProjects] = useState<PortfolioItem[]>([])
 
+  // Robust category matching: matches by ID, slug, or name (case-insensitive)
+  const isItemInCategory = (item: PortfolioItem, cat: PortfolioCategory): boolean => {
+    const itemCatId = String(item.category_id || '').trim().toLowerCase()
+    const itemCatName = String(item.category || '').trim().toLowerCase()
+    const catId = String(cat.id || '').trim().toLowerCase()
+    const catName = String(cat.name || '').trim().toLowerCase()
+    const catSlug = String(cat.slug || '').trim().toLowerCase()
+    const catNameId = String(cat.name_id || '').trim().toLowerCase()
+    const catNameEn = String(cat.name_en || '').trim().toLowerCase()
+
+    if (itemCatId && (itemCatId === catId || itemCatId === catSlug || itemCatId === catName)) {
+      return true
+    }
+
+    if (
+      itemCatName &&
+      (itemCatName === catName ||
+        itemCatName === catSlug ||
+        itemCatName === catId ||
+        itemCatName === catNameId ||
+        itemCatName === catNameEn)
+    ) {
+      return true
+    }
+
+    return false
+  }
+
   // Filter published categories and sort by display_order
   const displayCategories = useMemo(() => {
-    let list = categories.filter((c) => c.status === 'published')
+    let list = categories.filter((c) => (c.status || 'published') === 'published')
     list.sort((a, b) => (Number(a.display_order) || 99) - (Number(b.display_order) || 99))
 
     if (hideEmptyCategories) {
       list = list.filter((cat) => {
-        return portfolioItems.some((item) => String(item.category_id) === String(cat.id))
+        return portfolioItems.some((item) => isItemInCategory(item, cat))
       })
     }
+
+    // Check if there are published projects that don't match any existing category in list
+    const unmappedItems = portfolioItems.filter(
+      (item) => !list.some((cat) => isItemInCategory(item, cat))
+    )
+
+    if (unmappedItems.length > 0) {
+      // Group unmapped projects so NO inputted project is ever hidden
+      const unmappedGroups: Record<string, PortfolioItem[]> = {}
+      unmappedItems.forEach((item) => {
+        const groupName = item.category || 'Featured Projects'
+        if (!unmappedGroups[groupName]) unmappedGroups[groupName] = []
+        unmappedGroups[groupName].push(item)
+      })
+
+      Object.entries(unmappedGroups).forEach(([groupName, _groupItems], idx) => {
+        const syntheticId = 'cat_extra_' + idx
+        list.push({
+          id: syntheticId,
+          name: groupName,
+          name_id: groupName,
+          name_en: groupName,
+          slug: groupName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          subtitle: 'Selected Works & Creations',
+          subtitle_id: 'Karya dan Kreasi Terpilih',
+          subtitle_en: 'Selected Works & Creations',
+          description: `Curated showcase of projects in ${groupName}.`,
+          display_order: 900 + idx,
+          status: 'published',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
+      })
+    }
+
     return list
   }, [categories, portfolioItems, hideEmptyCategories])
 
-  // Group portfolio items by category_id
+  // Group portfolio items by category
   const itemsByCategory = useMemo(() => {
     const map: Record<string, PortfolioItem[]> = {}
     displayCategories.forEach((cat) => {
-      map[cat.id] = portfolioItems.filter(
-        (item) => String(item.category_id) === String(cat.id)
-      )
+      map[cat.id] = portfolioItems.filter((item) => isItemInCategory(item, cat))
     })
     return map
   }, [displayCategories, portfolioItems])

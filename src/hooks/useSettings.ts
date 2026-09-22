@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { apiGet, apiPost } from '../services/api'
+import { onRealtimeSync, emitRealtimeUpdate } from '../services/realtimeSync'
 import type { Settings } from '../types'
 
 export const THEME_PRESETS: Record<
@@ -99,11 +100,23 @@ export function useSettings(autoSync: boolean = false) {
   useEffect(() => {
     fetchSettings()
 
-    if (autoSync) {
-      const interval = setInterval(() => {
+    // Realtime sync: immediately reload when settings update
+    const unsubscribe = onRealtimeSync((entity) => {
+      if (entity === 'settings' || entity === 'all') {
         fetchSettings(true)
-      }, 30000)
-      return () => clearInterval(interval)
+      }
+    })
+
+    let interval: ReturnType<typeof setInterval> | null = null
+    if (autoSync) {
+      interval = setInterval(() => {
+        fetchSettings(true)
+      }, 15000)
+    }
+
+    return () => {
+      unsubscribe()
+      if (interval) clearInterval(interval)
     }
   }, [fetchSettings, autoSync])
 
@@ -118,6 +131,7 @@ export function useSettings(autoSync: boolean = false) {
       if (data) {
         setSettings((prev) => ({ ...prev, ...data } as Settings))
         applyThemeVariables(data)
+        emitRealtimeUpdate('settings')
         return true
       }
       return false

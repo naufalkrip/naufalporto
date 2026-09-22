@@ -5,6 +5,7 @@ import {
   updatePortfolioLinkApi,
   deletePortfolioLinkApi
 } from '../services/api'
+import { onRealtimeSync, emitRealtimeUpdate } from '../services/realtimeSync'
 import type { PortfolioLink } from '../types'
 
 export function usePortfolioLinks(portfolioId?: string, statusFilter: 'published' | 'all' = 'published') {
@@ -31,6 +32,16 @@ export function usePortfolioLinks(portfolioId?: string, statusFilter: 'published
 
   useEffect(() => {
     fetchLinks()
+
+    const unsubscribe = onRealtimeSync((entity) => {
+      if (entity === 'portfolio_links' || entity === 'portfolio' || entity === 'all') {
+        fetchLinks(true)
+      }
+    })
+
+    return () => {
+      unsubscribe()
+    }
   }, [fetchLinks])
 
   const addLink = async (newLink: Partial<PortfolioLink>): Promise<boolean> => {
@@ -42,6 +53,8 @@ export function usePortfolioLinks(portfolioId?: string, statusFilter: 'published
         return false
       }
       await fetchLinks(true)
+      emitRealtimeUpdate('portfolio_links')
+      emitRealtimeUpdate('portfolio')
       return true
     } catch (err: any) {
       setError(err.message)
@@ -60,6 +73,8 @@ export function usePortfolioLinks(portfolioId?: string, statusFilter: 'published
         return false
       }
       await fetchLinks(true)
+      emitRealtimeUpdate('portfolio_links')
+      emitRealtimeUpdate('portfolio')
       return true
     } catch (err: any) {
       setError(err.message)
@@ -78,6 +93,8 @@ export function usePortfolioLinks(portfolioId?: string, statusFilter: 'published
         return false
       }
       await fetchLinks(true)
+      emitRealtimeUpdate('portfolio_links')
+      emitRealtimeUpdate('portfolio')
       return true
     } catch (err: any) {
       setError(err.message)

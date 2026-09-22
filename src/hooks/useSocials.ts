@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { apiGet, apiPost } from '../services/api'
+import { onRealtimeSync, emitRealtimeUpdate } from '../services/realtimeSync'
 import type { SocialPlatform } from '../types'
 
 export function useSocials(statusFilter: 'active' | 'all' = 'active', autoSync: boolean = false) {
@@ -32,11 +33,23 @@ export function useSocials(statusFilter: 'active' | 'all' = 'active', autoSync: 
   useEffect(() => {
     fetchSocials()
 
-    if (autoSync) {
-      const interval = setInterval(() => {
+    // Realtime sync: reload immediately when socials update
+    const unsubscribe = onRealtimeSync((entity) => {
+      if (entity === 'socials' || entity === 'all') {
         fetchSocials(true)
-      }, 25000)
-      return () => clearInterval(interval)
+      }
+    })
+
+    let interval: ReturnType<typeof setInterval> | null = null
+    if (autoSync) {
+      interval = setInterval(() => {
+        fetchSocials(true)
+      }, 15000)
+    }
+
+    return () => {
+      unsubscribe()
+      if (interval) clearInterval(interval)
     }
   }, [fetchSocials, autoSync])
 
@@ -52,6 +65,7 @@ export function useSocials(statusFilter: 'active' | 'all' = 'active', autoSync: 
       }
       if (data) {
         await fetchSocials(true)
+        emitRealtimeUpdate('socials')
         return true
       }
       return false
@@ -72,6 +86,7 @@ export function useSocials(statusFilter: 'active' | 'all' = 'active', autoSync: 
         return false
       }
       await fetchSocials(true)
+      emitRealtimeUpdate('socials')
       return true
     } catch (err: any) {
       setError(err.message || 'Failed to update social platform')
@@ -90,6 +105,7 @@ export function useSocials(statusFilter: 'active' | 'all' = 'active', autoSync: 
         return false
       }
       await fetchSocials(true)
+      emitRealtimeUpdate('socials')
       return true
     } catch (err: any) {
       setError(err.message || 'Failed to delete social platform')
@@ -107,6 +123,7 @@ export function useSocials(statusFilter: 'active' | 'all' = 'active', autoSync: 
         return false
       }
       await fetchSocials(true)
+      emitRealtimeUpdate('socials')
       return true
     } catch (err: any) {
       setError(err.message || 'Failed to reorder social platforms')
